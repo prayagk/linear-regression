@@ -1,0 +1,14 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+#tfjs-visor-container {
+  color: #000000; /* Ensure table text is visible */
+  background-color: #ffffff;
+  button {
+    color: #ffffff;
+  }
+}
