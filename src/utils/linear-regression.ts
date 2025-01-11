@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   data,
+  io,
   layers,
+  loadLayersModel,
   losses,
   Rank,
   Sequential,
@@ -75,7 +77,7 @@ export const createModel = () => {
   return model;
 };
 
-export const trainModel = async (
+export const trainModel = (
   model: Sequential,
   featureTensor: Tensor<Rank>,
   labelTensor: Tensor<Rank>
@@ -104,4 +106,30 @@ export const trainModel = async (
       // onBatchEnd,
     },
   });
+};
+
+export const testModel = (
+  model: Sequential,
+  testingFeatureTensor: Tensor<Rank>,
+  testingLabelTensor: Tensor<Rank>
+) => model.evaluate(testingFeatureTensor, testingLabelTensor);
+
+export const loadSavedModel = async (storageID: string) => {
+  const storageKey = `localstorage://${storageID}`;
+  const models = await io.listModels();
+  const modelInfo = models[storageKey];
+  if (!modelInfo) {
+    return ["No saved models!", null];
+  }
+  const model = await loadLayersModel(storageKey);
+  const optimizer = train.sgd(0.1);
+  model.compile({
+    loss: losses.meanSquaredError,
+    optimizer,
+  });
+
+  if (!(model instanceof Sequential)) {
+    return ["No saved models!", null];
+  }
+  return [null, model];
 };

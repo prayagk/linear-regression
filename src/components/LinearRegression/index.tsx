@@ -1,19 +1,75 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { data, ready, tensor2d, tidy, util } from "@tensorflow/tfjs";
 import {
-  render,
-  //  show
-} from "@tensorflow/tfjs-vis";
-import { useEffect } from "react";
+  data,
+  ready,
+  Sequential,
+  Tensor,
+  tensor2d,
+  tidy,
+  util,
+} from "@tensorflow/tfjs";
+import { useEffect, useState } from "react";
 import {
   createModel,
   extractDataSet,
   normalise,
   splitTensor,
-  trainModel,
 } from "../../utils/linear-regression";
+import Header from "./Header";
+import VisorControls from "./VisorControls";
+import Train from "./Train";
+import Predict from "./Predict";
+import Test from "./Test";
+import { DataPoints } from "../../types";
+import Stats from "./Stats";
+import SaveModel from "./SaveModel";
+import LoadModel from "./LoadModel";
 
 const LinearAggression = () => {
+  const [dataPoints, setDataPoints] = useState<DataPoints[]>([]);
+  const [xLabel] = useState("sqft_living");
+  const [yLabel] = useState("price");
+  const [model, setModel] = useState<Sequential | null>(null);
+
+  const [storageID] = useState("linear-regression");
+  const [isTrained, setIsTrained] = useState(false);
+
+  const [trainingLabelTensor, setTrainingLabelTensor] = useState<Tensor | null>(
+    null
+  );
+  const [testingFeatureTensor, setTestingFeatureTensor] =
+    useState<Tensor | null>(null);
+
+  const [testingLabelTensor, setTestingLabelTensor] = useState<Tensor | null>(
+    null
+  );
+  const [trainingFeatureTensor, setTrainingFeatureTensor] =
+    useState<Tensor | null>(null);
+
+  const [terminalTexts, setTerminalTexts] = useState<string[]>([]);
+
+  const writeTerminal = (text: string) => {
+    setTerminalTexts((prev) => [...prev, text]);
+  };
+
+  const updateTrainingLoss = (loss: number | null) => {
+    writeTerminal(`Training Loss: ${loss}`);
+    setIsTrained(true);
+  };
+  const updateTestingLoss = (loss: number | null) => {
+    writeTerminal(`Testing Loss: ${loss}`);
+  };
+
+  const updateSavedInfo = (savedInfo: string) => {
+    writeTerminal(`Model saved: ${savedInfo}`);
+  };
+
+  const updateModel = (model: Sequential) => {
+    writeTerminal(`Model loaded from browser storage`);
+    setModel(model);
+    setIsTrained(true);
+  };
+
   useEffect(() => {
     const processLR = () => {
       (async function () {
@@ -22,16 +78,13 @@ const LinearAggression = () => {
         // Import data from CSV
         const houseSalesDataset = data.csv("/assets/kc_house_data.csv");
 
-        const xLabel = "sqft_living";
-        const yLabel = "price";
-
         // Extract x, y to plot
         const pointsDataSet = extractDataSet(houseSalesDataset, xLabel, yLabel);
         const points = await pointsDataSet.toArray();
 
         // Shuffling data before spliiting to avoid patterns
         util.shuffle(points);
-        plot(points, xLabel, yLabel);
+        setDataPoints(points);
 
         // Features (input)
         const featureValues = points.map((p) => p.x);
@@ -54,65 +107,79 @@ const LinearAggression = () => {
           [0.5, 0.5],
           points.length
         );
-        // trainingFeatureTensor.print(true);
-        // testingFeatureTensor.print(true);
+        setTrainingFeatureTensor(trainingFeatureTensor);
+        setTestingFeatureTensor(testingFeatureTensor);
+
         const [trainingLabelTensor, testingLabelTensor] = splitTensor(
           normalisedLabel.tensor,
           [0.5, 0.5],
           points.length
         );
-        // trainingLabelTensor.print(true);
-        // testingLabelTensor.print(true);
+        setTrainingLabelTensor(trainingLabelTensor);
+        setTestingLabelTensor(testingLabelTensor);
 
         const model = createModel();
+        setModel(model);
 
         // Inspection
         // show.modelSummary({ name: "Model Summary", tab: "Model" }, model);
         // const layer = model.getLayer("", 0);
         // show.layer({ name: "Layer 1" }, layer);
         // model.summary();
-
-        const result = await trainModel(
-          model,
-          trainingFeatureTensor,
-          trainingLabelTensor
-        );
-        const trainingLoss = result.history.loss.pop();
-        console.log("🚀 ~ trainingLoss:", trainingLoss);
-
-        const lossTensor = model.evaluate(
-          testingFeatureTensor,
-          testingLabelTensor
-        );
-        const loss = lossTensor.toString();
-        console.log("🚀 ~ loss:", loss);
       })();
     };
 
     tidy(processLR);
-  }, []);
+  }, [xLabel, yLabel]);
 
-  async function plot(
-    points: Array<{ x: number; y: number }>,
-    xLabel: string,
-    yLabel: string
-  ) {
-    return await render.scatterplot(
-      {
-        name: `${xLabel} vs ${yLabel}`,
-      },
-      {
-        values: points,
-        series: ["Original"],
-      },
-      {
-        xLabel: xLabel,
-        yLabel: yLabel,
-      }
-    );
-  }
+  return (
+    <>
+      <Header />
+      {model && (
+        <>
+          <VisorControls data={dataPoints} y={yLabel} x={xLabel} />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="border-r-2 pr-2">
+              <div className="flex gap-3 justify-between">
+                {trainingLabelTensor && trainingFeatureTensor && (
+                  <Train
+                    model={model}
+                    labelTensor={trainingLabelTensor}
+                    featureTensor={trainingFeatureTensor}
+                    updateTrainingLoss={updateTrainingLoss}
+                  />
+                )}
+                <span>Or</span>
+                <LoadModel storageID={storageID} updateModel={updateModel} />
+              </div>
+              {isTrained && (
+                <>
+                  <Stats texts={terminalTexts} />
+                  <div className="flex gap-3 justify-between">
+                    {testingLabelTensor && testingFeatureTensor && (
+                      <Test
+                        model={model}
+                        labelTensor={testingLabelTensor}
+                        featureTensor={testingFeatureTensor}
+                        updateTestingLoss={updateTestingLoss}
+                      />
+                    )}
 
-  return <div></div>;
+                    <SaveModel
+                      storageID={storageID}
+                      model={model}
+                      updateSavedInfo={updateSavedInfo}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+            <Predict />
+          </div>
+        </>
+      )}
+    </>
+  );
 };
 
 export default LinearAggression;
