@@ -2,14 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  button:disabled {
+    @apply text-gray-500 bg-gray-300 cursor-not-allowed;
+  }
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #000000;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -46,7 +52,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  color: #ffffff;
+  background-color: #0009b0;
   cursor: pointer;
   transition: border-color 0.25s;
 }

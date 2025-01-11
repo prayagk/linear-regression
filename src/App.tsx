@@ -41,7 +41,9 @@ function App() {
   // console.log(tf.getBackend());
   return (
     <>
-      <LinearAggression />
+      <div className="container max-w-[900px]">
+        <LinearAggression />
+      </div>
     </>
   );
 }
