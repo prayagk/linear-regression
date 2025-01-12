@@ -1,14 +1,17 @@
-import { Sequential } from "@tensorflow/tfjs";
 import { loadSavedModel as loadSavedModelFn } from "../../utils/linear-regression";
 import { useState } from "react";
+import { useLRStore } from "../../store";
 
 interface ILoadModel {
   storageID: string;
-  updateModel: (model: Sequential) => void;
 }
 
-function LoadModel({ storageID, updateModel }: ILoadModel) {
+function LoadModel({ storageID }: ILoadModel) {
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const setModel = useLRStore((state) => state.setModel);
+  const setIsTrained = useLRStore((state) => state.setIsTrained);
+  const setTerminalText = useLRStore((state) => state.setTerminalText);
 
   const loadSavedModel = async () => {
     setIsDisabled(true);
@@ -17,7 +20,9 @@ function LoadModel({ storageID, updateModel }: ILoadModel) {
       alert(error);
     }
     if (model && typeof model !== "string") {
-      updateModel(model);
+      setModel(model);
+      setIsTrained(true);
+      setTerminalText("Model loaded from browser storage");
     }
   };
 

@@ -1,19 +1,22 @@
-import { Sequential } from "@tensorflow/tfjs";
 import { useState } from "react";
+import { useLRStore } from "../../store";
 
 interface ISaveModel {
   storageID: string;
-  model: Sequential;
-  updateSavedInfo: (savedInfo: string) => void;
 }
 
-function SaveModel({ storageID, model, updateSavedInfo }: ISaveModel) {
+function SaveModel({ storageID }: ISaveModel) {
   const [isDisabled, setIsDisabled] = useState(false);
+  const model = useLRStore((state) => state.model);
+  const setSavedInfo = useLRStore((state) => state.setSavedInfo);
 
   const saveModel = async () => {
+    if (!model) return;
+
     setIsDisabled(true);
     const saveResults = await model.save(`localstorage://${storageID}`);
-    updateSavedInfo(saveResults.modelArtifactsInfo.dateSaved.toDateString());
+    const savedTime = saveResults.modelArtifactsInfo.dateSaved.toDateString();
+    setSavedInfo(`Model saved: ${savedTime}`);
   };
   return (
     <div>

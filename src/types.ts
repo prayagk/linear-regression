@@ -9,3 +9,8 @@ export interface NormalisedTensor {
   min: Tensor<Rank>;
   max: Tensor<Rank>;
 }
+
+export type TerminalTextType = {
+  id: string;
+  text: string;
+};

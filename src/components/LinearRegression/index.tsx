@@ -1,13 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  data,
-  ready,
-  Sequential,
-  Tensor,
-  tensor2d,
-  tidy,
-  util,
-} from "@tensorflow/tfjs";
+import { data, ready, Tensor, tensor2d, tidy, util } from "@tensorflow/tfjs";
 import { useEffect, useState } from "react";
 import {
   createModel,
@@ -24,12 +15,17 @@ import { DataPoints, NormalisedTensor } from "../../types";
 import Stats from "./Stats";
 import SaveModel from "./SaveModel";
 import LoadModel from "./LoadModel";
+import { useLRStore } from "../../store";
 
 const LinearAggression = () => {
+  const model = useLRStore((state) => state.model);
+  const setModel = useLRStore((state) => state.setModel);
+
+  const isTrained = useLRStore((state) => state.isTrained);
+
   const [dataPoints, setDataPoints] = useState<DataPoints[]>([]);
   const [xLabel] = useState("sqft_living");
   const [yLabel] = useState("price");
-  const [model, setModel] = useState<Sequential | null>(null);
 
   const [normalisedFeatureMinMax, setNormalisedFeatureMinMax] =
     useState<NormalisedTensor | null>(null);
@@ -37,8 +33,6 @@ const LinearAggression = () => {
     useState<NormalisedTensor | null>(null);
 
   const [storageID] = useState("linear-regression");
-  const [isTrained, setIsTrained] = useState(false);
-
   const [trainingLabelTensor, setTrainingLabelTensor] = useState<Tensor | null>(
     null
   );
@@ -50,30 +44,6 @@ const LinearAggression = () => {
   );
   const [trainingFeatureTensor, setTrainingFeatureTensor] =
     useState<Tensor | null>(null);
-
-  const [terminalTexts, setTerminalTexts] = useState<string[]>([]);
-
-  const writeTerminal = (text: string) => {
-    setTerminalTexts((prev) => [...prev, text]);
-  };
-
-  const updateTrainingLoss = (loss: number | null) => {
-    writeTerminal(`Training Loss: ${loss}`);
-    setIsTrained(true);
-  };
-  const updateTestingLoss = (loss: number | null) => {
-    writeTerminal(`Testing Loss: ${loss}`);
-  };
-
-  const updateSavedInfo = (savedInfo: string) => {
-    writeTerminal(`Model saved: ${savedInfo}`);
-  };
-
-  const updateModel = (model: Sequential) => {
-    writeTerminal(`Model loaded from browser storage`);
-    setModel(model);
-    setIsTrained(true);
-  };
 
   useEffect(() => {
     const processLR = () => {
@@ -160,33 +130,25 @@ const LinearAggression = () => {
               <div className="flex gap-3 justify-between">
                 {trainingLabelTensor && trainingFeatureTensor && (
                   <Train
-                    model={model}
                     labelTensor={trainingLabelTensor}
                     featureTensor={trainingFeatureTensor}
-                    updateTrainingLoss={updateTrainingLoss}
                   />
                 )}
                 <span>Or</span>
-                <LoadModel storageID={storageID} updateModel={updateModel} />
+                <LoadModel storageID={storageID} />
               </div>
               {isTrained && (
                 <>
-                  <Stats texts={terminalTexts} />
+                  <Stats />
                   <div className="flex gap-3 justify-between">
                     {testingLabelTensor && testingFeatureTensor && (
                       <Test
-                        model={model}
                         labelTensor={testingLabelTensor}
                         featureTensor={testingFeatureTensor}
-                        updateTestingLoss={updateTestingLoss}
                       />
                     )}
 
-                    <SaveModel
-                      storageID={storageID}
-                      model={model}
-                      updateSavedInfo={updateSavedInfo}
-                    />
+                    <SaveModel storageID={storageID} />
                   </div>
                 </>
               )}
