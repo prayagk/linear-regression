@@ -152,9 +152,11 @@ const LinearAggression = () => {
       <Header />
       {model && (
         <>
-          <VisorControls data={dataPoints} y={yLabel} x={xLabel} />
+          <div className="my-3">
+            <VisorControls data={dataPoints} y={yLabel} x={xLabel} />
+          </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="border-r-2 pr-2">
+            <div className="my-3">
               <div className="flex gap-3 justify-between">
                 {trainingLabelTensor && trainingFeatureTensor && (
                   <Train
@@ -189,7 +191,7 @@ const LinearAggression = () => {
                 </>
               )}
             </div>
-            {normalisedFeatureMinMax && normalisedLabelMinMax && (
+            {isTrained && normalisedFeatureMinMax && normalisedLabelMinMax && (
               <Predict
                 model={model}
                 normalisedFeature={normalisedFeatureMinMax}

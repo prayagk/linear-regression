@@ -29,7 +29,7 @@ function VisorControls({ data, x, y }: IVisorControlsProps) {
     setIsPlotted(true);
   };
   return (
-    <div className="py-3">
+    <div>
       {isPlotted ? (
         <button onClick={toggleVisor}>Toggle Visor</button>
       ) : (

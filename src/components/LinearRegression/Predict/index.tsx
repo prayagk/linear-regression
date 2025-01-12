@@ -31,8 +31,10 @@ function Predict({ model, normalisedFeature, normalisedLabel }: IPredict) {
     }
   };
   return (
-    <div>
-      <div>Predict</div>
+    <div className="border-l-2 pl-3">
+      <div className="mb-3 text-3xl flex justify-center">
+        <span>Predict House Price</span>
+      </div>
       <form onSubmit={predictPrice}>
         <label className="block text-sm" htmlFor="input">
           Sq.ft of Living space
@@ -50,7 +52,8 @@ function Predict({ model, normalisedFeature, normalisedLabel }: IPredict) {
       </form>
       {prediction && (
         <div>
-          <span>{`Predicted House Price: $${prediction}`}</span>
+          <span>{`Predicted house price:`}</span>
+          <span className="block text-3xl font-semibold">{`$${prediction}`}</span>
         </div>
       )}
     </div>
