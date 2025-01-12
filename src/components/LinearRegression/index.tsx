@@ -20,7 +20,7 @@ import VisorControls from "./VisorControls";
 import Train from "./Train";
 import Predict from "./Predict";
 import Test from "./Test";
-import { DataPoints } from "../../types";
+import { DataPoints, NormalisedTensor } from "../../types";
 import Stats from "./Stats";
 import SaveModel from "./SaveModel";
 import LoadModel from "./LoadModel";
@@ -30,6 +30,11 @@ const LinearAggression = () => {
   const [xLabel] = useState("sqft_living");
   const [yLabel] = useState("price");
   const [model, setModel] = useState<Sequential | null>(null);
+
+  const [normalisedFeatureMinMax, setNormalisedFeatureMinMax] =
+    useState<NormalisedTensor | null>(null);
+  const [normalisedLabelMinMax, setNormalisedLabelMinMax] =
+    useState<NormalisedTensor | null>(null);
 
   const [storageID] = useState("linear-regression");
   const [isTrained, setIsTrained] = useState(false);
@@ -100,6 +105,16 @@ const LinearAggression = () => {
         // Normalisation
         const normalisedFeature = normalise(featureTensor);
         const normalisedLabel = normalise(labelTensor);
+
+        setNormalisedFeatureMinMax({
+          min: normalisedFeature.min,
+          max: normalisedFeature.max,
+        });
+
+        setNormalisedLabelMinMax({
+          min: normalisedLabel.min,
+          max: normalisedLabel.max,
+        });
 
         // Splitting
         const [trainingFeatureTensor, testingFeatureTensor] = splitTensor(
@@ -174,7 +189,13 @@ const LinearAggression = () => {
                 </>
               )}
             </div>
-            <Predict />
+            {normalisedFeatureMinMax && normalisedLabelMinMax && (
+              <Predict
+                model={model}
+                normalisedFeature={normalisedFeatureMinMax}
+                normalisedLabel={normalisedLabelMinMax}
+              />
+            )}
           </div>
         </>
       )}

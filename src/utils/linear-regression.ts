@@ -10,9 +10,12 @@ import {
   sequential,
   split,
   Tensor,
+  tensor1d,
+  tidy,
   train,
 } from "@tensorflow/tfjs";
 import { show } from "@tensorflow/tfjs-vis";
+import { NormalisedTensor } from "../types";
 
 export const extractDataSet = (data: data.CSVDataset, x: string, y: string) =>
   data.map((record: any) => ({
@@ -20,10 +23,11 @@ export const extractDataSet = (data: data.CSVDataset, x: string, y: string) =>
     y: record[y],
   }));
 
-export const normalise = (tensor: Tensor<Rank>) => {
-  const min = tensor.min();
-  const max = tensor.max();
-
+export const normalise = (
+  tensor: Tensor<Rank>,
+  min: Tensor<Rank> = tensor.min(),
+  max: Tensor<Rank> = tensor.max()
+) => {
   const normalisedTensor = tensor.sub(min).div(max.sub(min));
   return {
     tensor: normalisedTensor,
@@ -132,4 +136,31 @@ export const loadSavedModel = async (storageID: string) => {
     return ["No saved models!", null];
   }
   return [null, model];
+};
+
+export const predict = (
+  predictionInput: number,
+  model: Sequential,
+  normalisedFeature: NormalisedTensor,
+  normalisedLabel: NormalisedTensor
+): null | number => {
+  let predictedPrice = null;
+  tidy(() => {
+    const inputTensor = tensor1d([predictionInput]);
+    const normalisedInput = normalise(
+      inputTensor,
+      normalisedFeature.min,
+      normalisedFeature.max
+    );
+    const predictTensor = model.predict(normalisedInput.tensor);
+    if (!Array.isArray(predictTensor)) {
+      const deNormalisedOutput = deNormalise(
+        predictTensor,
+        normalisedLabel.min,
+        normalisedLabel.max
+      );
+      predictedPrice = deNormalisedOutput.dataSync()[0];
+    }
+  });
+  return predictedPrice;
 };
