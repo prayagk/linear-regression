@@ -137,7 +137,7 @@ const LinearAggression = () => {
           <div className="my-3">
             <VisorControls data={dataPoints} y={yLabel} x={xLabel} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="my-3">
               <div className="flex gap-3 justify-between">
                 {trainingLabelTensor && trainingFeatureTensor && (
