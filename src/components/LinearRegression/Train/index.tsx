@@ -13,11 +13,20 @@ function Train({ featureTensor, labelTensor }: ITrainModelInterface) {
   const setTrainingLoss = useLRStore((state) => state.setTrainingLoss);
   const setIsTrained = useLRStore((state) => state.setIsTrained);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
+  const setLoader = useLRStore((state) => state.setLoader);
 
   const trainModel = async () => {
     if (!model) return;
     setIsDisabled(true);
+    setLoader({
+      isLoading: true,
+      status: "Training model",
+    });
     const result = await trainModelFn(model, featureTensor, labelTensor);
+    setLoader({
+      isLoading: false,
+      status: "Training completed",
+    });
     const loss = result.history.loss.pop();
 
     if (typeof loss === "number") {

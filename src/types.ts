@@ -14,3 +14,8 @@ export type TerminalTextType = {
   id: string;
   text: string;
 };
+
+export type LoaderType = {
+  isLoading: boolean;
+  status: string;
+};

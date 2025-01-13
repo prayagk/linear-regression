@@ -16,12 +16,15 @@ import Stats from "./Stats";
 import SaveModel from "./SaveModel";
 import LoadModel from "./LoadModel";
 import { useLRStore } from "../../store";
+import Loader from "../Loader";
 
 const LinearAggression = () => {
   const model = useLRStore((state) => state.model);
   const setModel = useLRStore((state) => state.setModel);
 
   const isTrained = useLRStore((state) => state.isTrained);
+
+  const setLoader = useLRStore((state) => state.setLoader);
 
   const [dataPoints, setDataPoints] = useState<DataPoints[]>([]);
   const [xLabel] = useState("sqft_living");
@@ -32,7 +35,6 @@ const LinearAggression = () => {
   const [normalisedLabelMinMax, setNormalisedLabelMinMax] =
     useState<NormalisedTensor | null>(null);
 
-  const [storageID] = useState("linear-regression");
   const [trainingLabelTensor, setTrainingLabelTensor] = useState<Tensor | null>(
     null
   );
@@ -48,6 +50,10 @@ const LinearAggression = () => {
   useEffect(() => {
     const processLR = () => {
       (async function () {
+        setLoader({
+          isLoading: true,
+          status: "Loading data",
+        });
         await ready();
 
         // Import data from CSV
@@ -106,6 +112,11 @@ const LinearAggression = () => {
         const model = createModel();
         setModel(model);
 
+        setLoader({
+          isLoading: false,
+          status: "Trained",
+        });
+
         // Inspection
         // show.modelSummary({ name: "Model Summary", tab: "Model" }, model);
         // const layer = model.getLayer("", 0);
@@ -119,6 +130,7 @@ const LinearAggression = () => {
 
   return (
     <>
+      <Loader />
       <Header />
       {model && (
         <>
@@ -135,7 +147,7 @@ const LinearAggression = () => {
                   />
                 )}
                 <span>Or</span>
-                <LoadModel storageID={storageID} />
+                <LoadModel />
               </div>
               {isTrained && (
                 <>
@@ -148,14 +160,13 @@ const LinearAggression = () => {
                       />
                     )}
 
-                    <SaveModel storageID={storageID} />
+                    <SaveModel />
                   </div>
                 </>
               )}
             </div>
             {isTrained && normalisedFeatureMinMax && normalisedLabelMinMax && (
               <Predict
-                model={model}
                 normalisedFeature={normalisedFeatureMinMax}
                 normalisedLabel={normalisedLabelMinMax}
               />

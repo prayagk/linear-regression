@@ -1,17 +1,21 @@
-import { Sequential } from "@tensorflow/tfjs";
 import { predict } from "../../../utils/linear-regression";
 import { NormalisedTensor } from "../../../types";
 import { useState } from "react";
+import { useLRStore } from "../../../store";
 
 interface IPredict {
-  model: Sequential;
   normalisedFeature: NormalisedTensor;
   normalisedLabel: NormalisedTensor;
 }
 
-function Predict({ model, normalisedFeature, normalisedLabel }: IPredict) {
+function Predict({ normalisedFeature, normalisedLabel }: IPredict) {
   const [prediction, setPrediction] = useState<null | string>(null);
+
+  const model = useLRStore((state) => state.model);
+
   const predictPrice = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!model) return;
+
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);

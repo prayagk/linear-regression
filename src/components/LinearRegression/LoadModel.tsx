@@ -2,16 +2,13 @@ import { loadSavedModel as loadSavedModelFn } from "../../utils/linear-regressio
 import { useState } from "react";
 import { useLRStore } from "../../store";
 
-interface ILoadModel {
-  storageID: string;
-}
-
-function LoadModel({ storageID }: ILoadModel) {
+function LoadModel() {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const setModel = useLRStore((state) => state.setModel);
   const setIsTrained = useLRStore((state) => state.setIsTrained);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
+  const storageID = useLRStore((state) => state.storageID);
 
   const loadSavedModel = async () => {
     setIsDisabled(true);

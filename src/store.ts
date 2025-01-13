@@ -1,6 +1,6 @@
 import { Sequential } from "@tensorflow/tfjs";
 import { create } from "zustand";
-import { TerminalTextType } from "./types";
+import { LoaderType, TerminalTextType } from "./types";
 
 type State = {
   model: Sequential | null;
@@ -9,6 +9,8 @@ type State = {
   trainingLoss: number | null;
   testingLoss: number | null;
   savedInfo: string | null;
+  storageID: string;
+  loader: LoaderType;
 };
 
 type Actions = {
@@ -18,6 +20,7 @@ type Actions = {
   setTrainingLoss: (value: number) => void;
   setTestingLoss: (value: number) => void;
   setSavedInfo: (value: string) => void;
+  setLoader: ({ isLoading, status }: LoaderType) => void;
 };
 
 export const useLRStore = create<State & Actions>((set) => ({
@@ -27,6 +30,11 @@ export const useLRStore = create<State & Actions>((set) => ({
   trainingLoss: null,
   testingLoss: null,
   savedInfo: null,
+  storageID: "linear-regression",
+  loader: {
+    isLoading: false,
+    status: "",
+  },
   setModel: (model: Sequential) => set({ model }),
   setTerminalText: (text: string) => {
     const newLine: TerminalTextType = {
@@ -41,4 +49,5 @@ export const useLRStore = create<State & Actions>((set) => ({
   setTrainingLoss: (value: number) => set({ trainingLoss: value }),
   setTestingLoss: (value: number) => set({ testingLoss: value }),
   setSavedInfo: (value: string) => set({ savedInfo: value }),
+  setLoader: (data: LoaderType) => set({ loader: data }),
 }));

@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useLRStore } from "../../store";
 
-interface ISaveModel {
-  storageID: string;
-}
-
-function SaveModel({ storageID }: ISaveModel) {
+function SaveModel() {
   const [isDisabled, setIsDisabled] = useState(false);
+
   const model = useLRStore((state) => state.model);
+  const storageID = useLRStore((state) => state.storageID);
   const setSavedInfo = useLRStore((state) => state.setSavedInfo);
 
   const saveModel = async () => {
