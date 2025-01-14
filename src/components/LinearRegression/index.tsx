@@ -57,7 +57,9 @@ const LinearAggression = () => {
         await ready();
 
         // Import data from CSV
-        const houseSalesDataset = data.csv("/assets/kc_house_data.csv");
+        const houseSalesDataset = data.csv(
+          `${import.meta.env.BASE_URL}assets/kc_house_data.csv`
+        );
 
         // Extract x, y to plot
         const pointsDataSet = extractDataSet(houseSalesDataset, xLabel, yLabel);
