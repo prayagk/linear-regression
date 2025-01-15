@@ -91,7 +91,7 @@ export const trainModel = (
     onEpochEnd,
   } = show.fitCallbacks(
     {
-      name: "Training Peerformance",
+      name: "Training Performance",
     },
     ["loss"]
   );

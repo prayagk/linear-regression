@@ -1,33 +1,36 @@
-import { render, visor } from "@tensorflow/tfjs-vis";
-import { DataPoints } from "../../types";
+import { visor } from "@tensorflow/tfjs-vis";
 import { useState } from "react";
+import { plot } from "../../utils/visor-utils";
+import { useLRStore } from "../../store";
+// import { linspace, tidy } from "@tensorflow/tfjs";
+// import { useLRStore } from "../../store";
 
-interface IVisorControlsProps {
-  data: DataPoints[];
-  x: string;
-  y: string;
-}
-function VisorControls({ data, x, y }: IVisorControlsProps) {
+function VisorControls() {
+  // const model = useLRStore((state) => state.model);
+
+  const plotingPoints = useLRStore((state) => state.plotingPoints);
+  const xLabel = useLRStore((state) => state.xLabel);
+  const yLabel = useLRStore((state) => state.yLabel);
+
   const [isPlotted, setIsPlotted] = useState(false);
   const toggleVisor = () => {
     visor().toggle();
   };
   const visualise = async () => {
-    await render.scatterplot(
-      {
-        name: `${x} vs ${y}`,
-      },
-      {
-        values: data,
-        series: ["Original"],
-      },
-      {
-        xLabel: x,
-        yLabel: y,
-      }
-    );
+    plot(xLabel, yLabel, plotingPoints, null);
     setIsPlotted(true);
   };
+
+  // const plotPredictionLine = () => {
+  //   if (!model) return;
+
+  //   tidy(() => {
+  //     const normalisedXs = linspace(0, 1, 100);
+  //     const normalisedYs = model.predict(normalisedXs.reshape([100, 1]));
+
+  //   });
+  // };
+
   return (
     <div>
       {isPlotted ? (

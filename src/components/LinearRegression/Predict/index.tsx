@@ -1,20 +1,21 @@
 import { predict } from "../../../utils/linear-regression";
-import { NormalisedTensor } from "../../../types";
 import { useState } from "react";
 import { useLRStore } from "../../../store";
 
-interface IPredict {
-  normalisedFeature: NormalisedTensor;
-  normalisedLabel: NormalisedTensor;
-}
-
-function Predict({ normalisedFeature, normalisedLabel }: IPredict) {
+function Predict() {
   const [prediction, setPrediction] = useState<null | string>(null);
 
   const model = useLRStore((state) => state.model);
+  const normalisedFeatureMinMax = useLRStore(
+    (state) => state.normalisedFeatureMinMax
+  );
+  const normalisedLabelMinMax = useLRStore(
+    (state) => state.normalisedLabelMinMax
+  );
 
   const predictPrice = (e: React.FormEvent<HTMLFormElement>) => {
     if (!model) return;
+    if (!normalisedFeatureMinMax || !normalisedLabelMinMax) return;
 
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -24,8 +25,8 @@ function Predict({ normalisedFeature, normalisedLabel }: IPredict) {
     const predictedPrice = predict(
       input,
       model,
-      normalisedFeature,
-      normalisedLabel
+      normalisedFeatureMinMax,
+      normalisedLabelMinMax
     );
     if (predictedPrice) {
       const approxPrice = `${parseInt(
@@ -44,6 +45,8 @@ function Predict({ normalisedFeature, normalisedLabel }: IPredict) {
           Sq.ft of Living space
         </label>
         <input
+          min={200}
+          max={1000000}
           name="inputField"
           type="number"
           inputMode="numeric"

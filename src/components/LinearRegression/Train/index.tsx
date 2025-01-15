@@ -1,22 +1,23 @@
-import { Rank, Tensor } from "@tensorflow/tfjs";
 import { trainModel as trainModelFn } from "../../../utils/linear-regression";
 import { useState } from "react";
 import { useLRStore } from "../../../store";
 
-interface ITrainModelInterface {
-  featureTensor: Tensor<Rank>;
-  labelTensor: Tensor<Rank>;
-}
-function Train({ featureTensor, labelTensor }: ITrainModelInterface) {
+function Train() {
   const [isDisabled, setIsDisabled] = useState(false);
   const model = useLRStore((state) => state.model);
+
   const setTrainingLoss = useLRStore((state) => state.setTrainingLoss);
   const setIsTrained = useLRStore((state) => state.setIsTrained);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
   const setLoader = useLRStore((state) => state.setLoader);
 
+  const featureTensor = useLRStore((state) => state.trainingFeatureTensor);
+  const labelTensor = useLRStore((state) => state.trainingLabelTensor);
+
   const trainModel = async () => {
     if (!model) return;
+    if (!featureTensor || !labelTensor) return;
+
     setIsDisabled(true);
     setLoader({
       isLoading: true,
@@ -36,6 +37,7 @@ function Train({ featureTensor, labelTensor }: ITrainModelInterface) {
       setTerminalText(`Training Loss: ${loss}`);
     }
   };
+
   return (
     <div>
       <div>
