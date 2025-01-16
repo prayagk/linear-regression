@@ -6,6 +6,7 @@ function SaveModel() {
 
   const model = useLRStore((state) => state.model);
   const storageID = useLRStore((state) => state.storageID);
+  const trainingStatus = useLRStore((state) => state.trainingStatus);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
 
   const saveModel = async () => {
@@ -18,7 +19,10 @@ function SaveModel() {
   };
   return (
     <div>
-      <button disabled={isDisabled} onClick={saveModel}>
+      <button
+        disabled={isDisabled || trainingStatus === "IMPORTED"}
+        onClick={saveModel}
+      >
         Save Model
       </button>
     </div>

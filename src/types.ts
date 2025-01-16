@@ -20,4 +20,4 @@ export type LoaderType = {
   status: string;
 };
 
-export type TrainingStatusType = null | "STARTED" | "COMPLETED";
+export type TrainingStatusType = null | "STARTED" | "COMPLETED" | "IMPORTED";

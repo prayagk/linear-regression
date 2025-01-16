@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { testModel as testModelFn } from "../../../utils/linear-regression";
 import { useLRStore } from "../../../store";
 
@@ -7,6 +7,11 @@ function Test() {
   const model = useLRStore((state) => state.model);
   const setTestingLoss = useLRStore((state) => state.setTestingLoss);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
+  const trainingStatus = useLRStore((state) => state.trainingStatus);
+
+  useEffect(() => {
+    setIsDisabled(false);
+  }, [trainingStatus]);
 
   const featureTensor = useLRStore((state) => state.testingFeatureTensor);
   const labelTensor = useLRStore((state) => state.testingLabelTensor);

@@ -18,6 +18,9 @@ const LinearAggression = () => {
   const isDataLoaded = useLRStore((state) => state.isDataLoaded);
   const isMobile = useIsMobile();
 
+  const isTrained =
+    trainingStatus === "IMPORTED" || trainingStatus === "COMPLETED";
+
   return (
     <>
       <Loader />
@@ -45,7 +48,7 @@ const LinearAggression = () => {
             )}
             <Stats />
 
-            {trainingStatus === "COMPLETED" && (
+            {isTrained && (
               <>
                 <div className="flex gap-3 justify-between">
                   <Test />
@@ -54,7 +57,7 @@ const LinearAggression = () => {
               </>
             )}
           </div>
-          {trainingStatus === "COMPLETED" && <Predict />}
+          {isTrained && <Predict />}
         </div>
       </>
     </>

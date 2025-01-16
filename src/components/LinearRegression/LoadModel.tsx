@@ -18,7 +18,7 @@ function LoadModel() {
     }
     if (model && typeof model !== "string") {
       setModel(model);
-      setTrainingStatus("COMPLETED");
+      setTrainingStatus("IMPORTED");
       setTerminalText("Model loaded from browser storage");
     }
   };
