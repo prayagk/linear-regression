@@ -22,6 +22,8 @@ function Predict() {
     const data = new FormData(form);
     const input = parseInt(data.get("inputField") as string);
 
+    if (input < 200 || input > 1000000) return;
+
     const predictedPrice = predict(
       input,
       model,
@@ -36,7 +38,7 @@ function Predict() {
     }
   };
   return (
-    <div className="border-l-2 pl-3">
+    <div className="border-2 md:border-0 md:border-l-2 p-3">
       <div className="mb-3 text-3xl flex justify-center">
         <span>Predict House Price</span>
       </div>
@@ -55,7 +57,7 @@ function Predict() {
           id="input"
           placeholder="2000"
         />
-        <button className="my-2">Predict House Price</button>
+        <button className="my-2">Predict</button>
       </form>
       {prediction && (
         <div>

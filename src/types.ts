@@ -19,3 +19,5 @@ export type LoaderType = {
   isLoading: boolean;
   status: string;
 };
+
+export type TrainingStatusType = null | "STARTED" | "COMPLETED";

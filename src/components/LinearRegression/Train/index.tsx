@@ -2,12 +2,12 @@ import { trainModel as trainModelFn } from "../../../utils/linear-regression";
 import { useState } from "react";
 import { useLRStore } from "../../../store";
 
-function Train() {
+function Train({ isMobile }: { isMobile: boolean }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const model = useLRStore((state) => state.model);
 
   const setTrainingLoss = useLRStore((state) => state.setTrainingLoss);
-  const setIsTrained = useLRStore((state) => state.setIsTrained);
+  const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
   const setLoader = useLRStore((state) => state.setLoader);
 
@@ -18,12 +18,19 @@ function Train() {
     if (!model) return;
     if (!featureTensor || !labelTensor) return;
 
+    setTerminalText("Training started");
+    setTrainingStatus("STARTED");
     setIsDisabled(true);
     setLoader({
       isLoading: true,
-      status: "Training model",
+      status: "Training model.",
     });
-    const result = await trainModelFn(model, featureTensor, labelTensor);
+    const result = await trainModelFn(
+      model,
+      featureTensor,
+      labelTensor,
+      isMobile
+    );
     setLoader({
       isLoading: false,
       status: "Training completed",
@@ -33,8 +40,9 @@ function Train() {
     if (typeof loss === "number") {
       // Model trained
       setTrainingLoss(loss);
-      setIsTrained(true);
-      setTerminalText(`Training Loss: ${loss}`);
+      setTrainingStatus("COMPLETED");
+      setTerminalText("Model Trained!");
+      setTerminalText(`Training Loss: ${loss.toFixed(5)}`);
     }
   };
 

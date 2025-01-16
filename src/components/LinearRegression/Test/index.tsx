@@ -20,7 +20,8 @@ function Test() {
     if (!Array.isArray(result)) {
       const loss = result.dataSync()[0];
       setTestingLoss(loss);
-      setTerminalText(`Testing Loss: ${loss}`);
+      setTerminalText("Model tested with testing data");
+      setTerminalText(`Testing Loss: ${loss.toFixed(5)}`);
     }
   };
   return (

@@ -42,6 +42,7 @@ function LoadData() {
 
   const isDataLoaded = useLRStore((state) => state.isDataLoaded);
   const setIsDataLoaded = useLRStore((state) => state.setIsDataLoaded);
+  const setTerminalText = useLRStore((state) => state.setTerminalText);
 
   const processLR = () => {
     tidy(() => {
@@ -61,8 +62,6 @@ function LoadData() {
           isLoading: true,
           status: "Preparing model",
         });
-
-        setIsDataLoaded(true);
 
         // Extract x, y to plot
         const pointsDataSet = extractDataSet(houseSalesDataset, xLabel, yLabel);
@@ -122,6 +121,10 @@ function LoadData() {
           isLoading: false,
           status: "",
         });
+        setIsDataLoaded(true);
+        setTerminalText("Data loaded");
+        setTerminalText("Data shuffled and splitted");
+        setTerminalText("Model prepared");
 
         // Inspection
         // show.modelSummary({ name: "Model Summary", tab: "Model" }, model);

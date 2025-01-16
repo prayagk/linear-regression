@@ -6,7 +6,7 @@ function SaveModel() {
 
   const model = useLRStore((state) => state.model);
   const storageID = useLRStore((state) => state.storageID);
-  const setSavedInfo = useLRStore((state) => state.setSavedInfo);
+  const setTerminalText = useLRStore((state) => state.setTerminalText);
 
   const saveModel = async () => {
     if (!model) return;
@@ -14,7 +14,7 @@ function SaveModel() {
     setIsDisabled(true);
     const saveResults = await model.save(`localstorage://${storageID}`);
     const savedTime = saveResults.modelArtifactsInfo.dateSaved.toDateString();
-    setSavedInfo(`Model saved: ${savedTime}`);
+    setTerminalText(`Model saved in browser: ${savedTime}`);
   };
   return (
     <div>

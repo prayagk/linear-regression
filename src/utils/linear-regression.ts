@@ -84,8 +84,15 @@ export const createModel = () => {
 export const trainModel = (
   model: Sequential,
   featureTensor: Tensor<Rank>,
-  labelTensor: Tensor<Rank>
+  labelTensor: Tensor<Rank>,
+  isMobile: boolean = false
 ) => {
+  if (isMobile) {
+    return model.fit(featureTensor, labelTensor, {
+      epochs: 20,
+      shuffle: true,
+    });
+  }
   const {
     // onBatchEnd,
     onEpochEnd,

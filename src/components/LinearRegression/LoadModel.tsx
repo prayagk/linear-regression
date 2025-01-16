@@ -6,7 +6,7 @@ function LoadModel() {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const setModel = useLRStore((state) => state.setModel);
-  const setIsTrained = useLRStore((state) => state.setIsTrained);
+  const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
   const storageID = useLRStore((state) => state.storageID);
 
@@ -18,7 +18,7 @@ function LoadModel() {
     }
     if (model && typeof model !== "string") {
       setModel(model);
-      setIsTrained(true);
+      setTrainingStatus("COMPLETED");
       setTerminalText("Model loaded from browser storage");
     }
   };
@@ -26,7 +26,7 @@ function LoadModel() {
   return (
     <div>
       <button disabled={isDisabled} onClick={loadSavedModel}>
-        Load saved model
+        Load model
       </button>
     </div>
   );

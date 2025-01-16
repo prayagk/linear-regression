@@ -7,42 +7,46 @@ import LoadModel from "./LoadModel";
 import Loader from "../Loader";
 import { useLRStore } from "../../store";
 import { lazy, Suspense } from "react";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const LazyVisorComponent = lazy(() => import("./VisorControls"));
 const LazyTrainComponent = lazy(() => import("./Train"));
 const LazyLoadData = lazy(() => import("./LoadData"));
 
 const LinearAggression = () => {
-  const isTrained = useLRStore((state) => state.isTrained);
+  const trainingStatus = useLRStore((state) => state.trainingStatus);
   const isDataLoaded = useLRStore((state) => state.isDataLoaded);
+  const isMobile = useIsMobile();
 
   return (
     <>
       <Loader />
       <Header />
       <>
-        <div className="my-3 flex gap-2">
+        <div className="mt-3 flex gap-2">
           <Suspense fallback={<div>Loading</div>}>
             <LazyLoadData />
-            {isDataLoaded && <LazyVisorComponent />}
+            {isDataLoaded && !isMobile && <LazyVisorComponent />}
           </Suspense>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="my-3">
             {isDataLoaded && (
-              <div className="flex gap-3 justify-between">
-                <Suspense fallback={<div>Loading</div>}>
-                  <LazyTrainComponent />
-                </Suspense>
-
-                <span>Or</span>
-                <LoadModel />
-              </div>
-            )}
-
-            {isTrained && (
               <>
-                <Stats />
+                <div className="flex gap-3 justify-between items-center">
+                  <Suspense fallback={<div>Loading</div>}>
+                    <LazyTrainComponent isMobile={isMobile} />
+                  </Suspense>
+
+                  <span>Or</span>
+                  <LoadModel />
+                </div>
+              </>
+            )}
+            <Stats />
+
+            {trainingStatus === "COMPLETED" && (
+              <>
                 <div className="flex gap-3 justify-between">
                   <Test />
                   <SaveModel />
@@ -50,7 +54,7 @@ const LinearAggression = () => {
               </>
             )}
           </div>
-          {isTrained && <Predict />}
+          {trainingStatus === "COMPLETED" && <Predict />}
         </div>
       </>
     </>

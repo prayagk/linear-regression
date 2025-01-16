@@ -5,6 +5,7 @@ import {
   LoaderType,
   NormalisedTensor,
   TerminalTextType,
+  TrainingStatusType,
 } from "./types";
 
 type State = {
@@ -12,11 +13,10 @@ type State = {
   xLabel: string;
   yLabel: string;
   isDataLoaded: boolean;
-  isTrained: boolean;
+  trainingStatus: TrainingStatusType;
   terminalTexts: TerminalTextType[];
   trainingLoss: number | null;
   testingLoss: number | null;
-  savedInfo: string | null;
   storageID: string;
   loader: LoaderType;
   normalisedFeatureMinMax: NormalisedTensor | null;
@@ -31,11 +31,10 @@ type State = {
 type Actions = {
   setModel: (model: Sequential) => void;
   setIsDataLoaded: (isDataLoaded: boolean) => void;
-  setIsTrained: (flag: boolean) => void;
+  setTrainingStatus: (trainingStatus: TrainingStatusType) => void;
   setTerminalText: (text: string) => void;
   setTrainingLoss: (value: number) => void;
   setTestingLoss: (value: number) => void;
-  setSavedInfo: (value: string) => void;
   setLoader: ({ isLoading, status }: LoaderType) => void;
   setNormalisedFeatureMinMax: (normalisedFeature: NormalisedTensor) => void;
   setNormalisedLabelMinMax: (normalisedLabel: NormalisedTensor) => void;
@@ -51,11 +50,10 @@ export const useLRStore = create<State & Actions>((set) => ({
   xLabel: "sqft_living",
   yLabel: "price",
   isDataLoaded: false,
-  isTrained: false,
+  trainingStatus: null,
   terminalTexts: [],
   trainingLoss: null,
   testingLoss: null,
-  savedInfo: null,
   storageID: "linear-regression",
   loader: {
     isLoading: false,
@@ -79,10 +77,10 @@ export const useLRStore = create<State & Actions>((set) => ({
     }));
   },
   setIsDataLoaded: (isDataLoaded: boolean) => set({ isDataLoaded }),
-  setIsTrained: (flag: boolean) => set({ isTrained: flag }),
+  setTrainingStatus: (trainingStatus: TrainingStatusType) =>
+    set({ trainingStatus }),
   setTrainingLoss: (value: number) => set({ trainingLoss: value }),
   setTestingLoss: (value: number) => set({ testingLoss: value }),
-  setSavedInfo: (value: string) => set({ savedInfo: value }),
   setLoader: (data: LoaderType) => set({ loader: data }),
   setNormalisedFeatureMinMax: (normalisedFeatureMinMax: NormalisedTensor) =>
     set({ normalisedFeatureMinMax }),
