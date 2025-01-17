@@ -22,6 +22,7 @@ function SaveModel() {
       <button
         disabled={isDisabled || trainingStatus === "IMPORTED"}
         onClick={saveModel}
+        title="Save model in browser"
       >
         Save Model
       </button>

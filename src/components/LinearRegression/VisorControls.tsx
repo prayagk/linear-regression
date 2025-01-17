@@ -36,7 +36,9 @@ function VisorControls() {
       {isPlotted ? (
         <button onClick={toggleVisor}>Toggle Visor</button>
       ) : (
-        <button onClick={visualise}>Visualise Data</button>
+        <button title="Visualise data on a scatter plot" onClick={visualise}>
+          Visualise Data
+        </button>
       )}
     </div>
   );

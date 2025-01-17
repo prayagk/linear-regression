@@ -57,11 +57,6 @@ function LoadData() {
         const houseSalesDataset = data.csv(
           `${import.meta.env.BASE_URL}assets/kc_house_data.csv`
         );
-        await sleep(1000);
-        setLoader({
-          isLoading: true,
-          status: "Preparing model",
-        });
 
         // Extract x, y to plot
         const pointsDataSet = extractDataSet(houseSalesDataset, xLabel, yLabel);
@@ -124,7 +119,6 @@ function LoadData() {
         setIsDataLoaded(true);
         setTerminalText("Data loaded");
         setTerminalText("Data shuffled and splitted");
-        setTerminalText("Model prepared");
 
         // Inspection
         // show.modelSummary({ name: "Model Summary", tab: "Model" }, model);
@@ -137,7 +131,11 @@ function LoadData() {
 
   return (
     <div>
-      <button disabled={isDataLoaded} onClick={processLR}>
+      <button
+        title="Load data from CSV"
+        disabled={isDataLoaded}
+        onClick={processLR}
+      >
         Load Data
       </button>
     </div>

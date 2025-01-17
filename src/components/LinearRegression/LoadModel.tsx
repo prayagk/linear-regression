@@ -25,7 +25,11 @@ function LoadModel() {
 
   return (
     <div>
-      <button disabled={isDisabled} onClick={loadSavedModel}>
+      <button
+        title="Load saved model"
+        disabled={isDisabled}
+        onClick={loadSavedModel}
+      >
         Load model
       </button>
     </div>

@@ -57,7 +57,9 @@ function Predict() {
           id="input"
           placeholder="2000"
         />
-        <button className="my-2">Predict</button>
+        <button title="Predict house price" className="my-2">
+          Predict
+        </button>
       </form>
       {prediction && (
         <div>

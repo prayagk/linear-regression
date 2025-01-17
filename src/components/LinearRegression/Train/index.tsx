@@ -23,7 +23,7 @@ function Train({ isMobile }: { isMobile: boolean }) {
     setIsDisabled(true);
     setLoader({
       isLoading: true,
-      status: "Training model.",
+      status: "Training model",
     });
     const result = await trainModelFn(
       model,
@@ -49,7 +49,11 @@ function Train({ isMobile }: { isMobile: boolean }) {
   return (
     <div>
       <div>
-        <button onClick={trainModel} disabled={isDisabled}>
+        <button
+          onClick={trainModel}
+          disabled={isDisabled}
+          title="Train new model"
+        >
           Train Model
         </button>
       </div>
