@@ -6,9 +6,12 @@ function Reset({ isMobile }: { isMobile: boolean }) {
   const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
   const resetTerminalText = useLRStore((state) => state.resetTerminalText);
   const setModel = useLRStore((state) => state.setModel);
+  const setTerminalText = useLRStore((state) => state.setTerminalText);
+
   const onReset = () => {
     setTrainingStatus(null);
     resetTerminalText();
+    setTerminalText("Model reset");
     setModel(null);
     if (!isMobile) closeVisor();
   };

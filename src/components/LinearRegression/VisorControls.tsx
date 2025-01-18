@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { plot, toggleVisor } from "../../utils/visor-utils";
+import { openVisor, plot, toggleVisor } from "../../utils/visor-utils";
 import { useLRStore } from "../../store";
 import { plotPredictionLine } from "../../utils/linear-regression";
 
@@ -22,6 +22,7 @@ function VisorControls() {
   const toggleVisorClick = () => toggleVisor();
 
   const visualise = async () => {
+    openVisor();
     plot(null);
     setIsPlotted(true);
   };
@@ -30,6 +31,7 @@ function VisorControls() {
     if (!model || !normalisedFeatureMinMax || !normalisedLabelMinMax) return;
 
     const predictedLinePoints = plotPredictionLine(model);
+    openVisor();
     plot(predictedLinePoints);
     setIsPlotted(true);
   };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { testModel as testModelFn } from "../../../utils/linear-regression";
-import { useLRStore } from "../../../store";
+import { testModel as testModelFn } from "../../../../utils/linear-regression";
+import { useLRStore } from "../../../../store";
 
 function Test() {
   const [isDisabled, setIsDisabled] = useState(false);

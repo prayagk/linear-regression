@@ -1,8 +1,8 @@
 import {
   createModel,
   trainModel as trainModelFn,
-} from "../../../utils/linear-regression";
-import { useLRStore } from "../../../store";
+} from "../../../../utils/linear-regression";
+import { useLRStore } from "../../../../store";
 
 function Train({ isMobile }: { isMobile: boolean }) {
   const setTrainingLoss = useLRStore((state) => state.setTrainingLoss);

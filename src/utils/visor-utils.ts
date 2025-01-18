@@ -16,7 +16,6 @@ export const plot = async (predictedLinePoints: DataPoints[] | null = null) => {
     values = [data];
     series = ["Original"];
   }
-  openVisor();
   await render.scatterplot(
     {
       name: `${x} vs ${y}`,

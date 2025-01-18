@@ -1,8 +1,9 @@
 import { predict } from "../../../utils/linear-regression";
 import { useState } from "react";
 import { useLRStore } from "../../../store";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid"; // For outline style
 
-function Predict() {
+function Predict({ isTrained }: { isTrained: boolean }) {
   const [prediction, setPrediction] = useState<null | string>(null);
 
   const model = useLRStore((state) => state.model);
@@ -14,10 +15,10 @@ function Predict() {
   );
 
   const predictPrice = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!model) return;
     if (!normalisedFeatureMinMax || !normalisedLabelMinMax) return;
 
-    e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);
     const input = parseInt(data.get("inputField") as string);
@@ -39,14 +40,16 @@ function Predict() {
   };
   return (
     <div className="border-2 p-3">
-      <div className="mb-3 text-3xl flex justify-center">
+      <div className="mb-5 text-3xl flex justify-center items-center">
         <span>Predict House Price</span>
+        <ArrowTrendingUpIcon className="mx-2 h-9 text-blue-500" />
       </div>
       <form onSubmit={predictPrice}>
         <label className="block text-sm" htmlFor="input">
           Sq.ft of Living space
         </label>
         <input
+          disabled={!isTrained}
           min={300}
           max={1000000}
           name="inputField"
@@ -57,14 +60,18 @@ function Predict() {
           id="input"
           placeholder="2000"
         />
-        <button title="Predict house price" className="my-2">
+        <button
+          disabled={!isTrained}
+          title="Predict house price"
+          className="my-2"
+        >
           Predict
         </button>
       </form>
       {prediction && (
         <div>
-          <span>{`Predicted house price:`}</span>
-          <span className="block text-3xl font-semibold">{`$${prediction}`}</span>
+          <span>{"Predicted house price:"}</span>
+          <span className="block text-6xl font-semibold text-center">{`$${prediction}`}</span>
         </div>
       )}
     </div>

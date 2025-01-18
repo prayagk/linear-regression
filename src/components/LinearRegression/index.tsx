@@ -1,17 +1,14 @@
 import Header from "./Header";
 import Predict from "./Predict";
-import Test from "./Test";
-import Stats from "./Stats";
-import SaveModel from "./SaveModel";
-import LoadModel from "./LoadModel";
+
 import Loader from "../Loader";
 import { useLRStore } from "../../store";
 import { lazy, Suspense } from "react";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import Reset from "./Reset";
+import TrainAndTest from "./TrainAndTest";
 
 const LazyVisorComponent = lazy(() => import("./VisorControls"));
-const LazyTrainComponent = lazy(() => import("./Train"));
 const LazyLoadData = lazy(() => import("./LoadData"));
 
 const LinearAggression = () => {
@@ -37,29 +34,10 @@ const LinearAggression = () => {
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
           <div>
             {isDataLoaded && (
-              <>
-                <div className="flex gap-3 justify-between items-center">
-                  <Suspense fallback={<div>Loading</div>}>
-                    <LazyTrainComponent isMobile={isMobile} />
-                  </Suspense>
-
-                  <span>Or</span>
-                  <LoadModel />
-                </div>
-              </>
-            )}
-            <Stats />
-
-            {isTrained && (
-              <>
-                <div className="flex gap-3 justify-between">
-                  <Test />
-                  <SaveModel />
-                </div>
-              </>
+              <TrainAndTest isMobile={isMobile} isTrained={isTrained} />
             )}
           </div>
-          {isTrained && <Predict />}
+          {isDataLoaded && <Predict isTrained={isTrained} />}
         </div>
       </>
     </>
