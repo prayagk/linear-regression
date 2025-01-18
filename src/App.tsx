@@ -1,5 +1,6 @@
 // import { tensor, tensor1d, tensor2d } from "@tensorflow/tfjs";
 import "./App.css";
+import Credits from "./components/general/Credits";
 import LinearAggression from "./components/LinearRegression";
 
 function App() {
@@ -40,11 +41,29 @@ function App() {
 
   // console.log(tf.getBackend());
   return (
-    <>
-      <div className="container md:max-w-[900px]">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow md:max-w-[900px] flex flex-col justify-center items-start">
         <LinearAggression />
       </div>
-    </>
+      <div className="py-6">
+        <footer>
+          <Credits>
+            <p>
+              Data Source:{" "}
+              <a
+                href="https://www.kaggle.com/datasets/harlfoxem/housesalesprediction"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                House Sales in King County, USA
+              </a>{" "}
+              from Kaggle.
+            </p>
+            <p>License: CC0: Public Domain</p>
+          </Credits>
+        </footer>
+      </div>
+    </div>
   );
 }
 
