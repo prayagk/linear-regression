@@ -59,6 +59,7 @@ export const useLRStore = create<State & Actions>((set) => ({
   loader: {
     isLoading: false,
     status: "",
+    description: "",
   },
   normalisedFeatureMinMax: null,
   normalisedLabelMinMax: null,

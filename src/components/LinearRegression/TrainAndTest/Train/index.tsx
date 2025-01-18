@@ -26,6 +26,9 @@ function Train({ isMobile }: { isMobile: boolean }) {
     setLoader({
       isLoading: true,
       status: "Training model",
+      description: isMobile
+        ? "P.S.: Use desktop to see the training process."
+        : "",
     });
     const result = await trainModelFn(
       model,

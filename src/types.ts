@@ -18,6 +18,7 @@ export type TerminalTextType = {
 export type LoaderType = {
   isLoading: boolean;
   status: string;
+  description?: string;
 };
 
 export type TrainingStatusType = null | "STARTED" | "COMPLETED" | "IMPORTED";
