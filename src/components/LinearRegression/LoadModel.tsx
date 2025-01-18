@@ -1,17 +1,14 @@
 import { loadSavedModel as loadSavedModelFn } from "../../utils/linear-regression";
-import { useState } from "react";
 import { useLRStore } from "../../store";
 
 function LoadModel() {
-  const [isDisabled, setIsDisabled] = useState(false);
-
   const setModel = useLRStore((state) => state.setModel);
+  const trainingStatus = useLRStore((state) => state.trainingStatus);
   const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
   const storageID = useLRStore((state) => state.storageID);
 
   const loadSavedModel = async () => {
-    setIsDisabled(true);
     const [error, model] = await loadSavedModelFn(storageID);
     if (error) {
       alert(error);
@@ -27,7 +24,7 @@ function LoadModel() {
     <div>
       <button
         title="Load saved model"
-        disabled={isDisabled}
+        disabled={Boolean(trainingStatus)}
         onClick={loadSavedModel}
       >
         Load model

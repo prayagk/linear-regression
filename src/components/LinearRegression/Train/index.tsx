@@ -1,26 +1,28 @@
-import { trainModel as trainModelFn } from "../../../utils/linear-regression";
-import { useState } from "react";
+import {
+  createModel,
+  trainModel as trainModelFn,
+} from "../../../utils/linear-regression";
 import { useLRStore } from "../../../store";
 
 function Train({ isMobile }: { isMobile: boolean }) {
-  const [isDisabled, setIsDisabled] = useState(false);
-  const model = useLRStore((state) => state.model);
-
   const setTrainingLoss = useLRStore((state) => state.setTrainingLoss);
   const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
+  const trainingStatus = useLRStore((state) => state.trainingStatus);
   const setTerminalText = useLRStore((state) => state.setTerminalText);
   const setLoader = useLRStore((state) => state.setLoader);
 
   const featureTensor = useLRStore((state) => state.trainingFeatureTensor);
   const labelTensor = useLRStore((state) => state.trainingLabelTensor);
+  const setModel = useLRStore((state) => state.setModel);
 
   const trainModel = async () => {
-    if (!model) return;
     if (!featureTensor || !labelTensor) return;
+
+    const model = createModel();
+    setModel(model);
 
     setTerminalText("Training started");
     setTrainingStatus("STARTED");
-    setIsDisabled(true);
     setLoader({
       isLoading: true,
       status: "Training model",
@@ -51,7 +53,7 @@ function Train({ isMobile }: { isMobile: boolean }) {
       <div>
         <button
           onClick={trainModel}
-          disabled={isDisabled}
+          disabled={Boolean(trainingStatus)}
           title="Train new model"
         >
           Train Model

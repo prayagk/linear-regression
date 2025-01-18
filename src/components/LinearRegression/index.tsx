@@ -8,6 +8,7 @@ import Loader from "../Loader";
 import { useLRStore } from "../../store";
 import { lazy, Suspense } from "react";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import Reset from "./Reset";
 
 const LazyVisorComponent = lazy(() => import("./VisorControls"));
 const LazyTrainComponent = lazy(() => import("./Train"));
@@ -30,6 +31,7 @@ const LinearAggression = () => {
           <Suspense fallback={<div>Loading</div>}>
             <LazyLoadData />
             {isDataLoaded && !isMobile && <LazyVisorComponent />}
+            {isTrained && <Reset />}
           </Suspense>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

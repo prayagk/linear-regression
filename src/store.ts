@@ -29,9 +29,10 @@ type State = {
 };
 
 type Actions = {
-  setModel: (model: Sequential) => void;
+  setModel: (model: Sequential | null) => void;
   setIsDataLoaded: (isDataLoaded: boolean) => void;
   setTrainingStatus: (trainingStatus: TrainingStatusType) => void;
+  resetTerminalText: () => void;
   setTerminalText: (text: string) => void;
   setTrainingLoss: (value: number) => void;
   setTestingLoss: (value: number) => void;
@@ -66,7 +67,8 @@ export const useLRStore = create<State & Actions>((set) => ({
   testingLabelTensor: null,
   testingFeatureTensor: null,
   plotingPoints: [],
-  setModel: (model: Sequential) => set({ model }),
+  setModel: (model: Sequential | null) => set({ model }),
+  resetTerminalText: () => set({ terminalTexts: [] }),
   setTerminalText: (text: string) => {
     const newLine: TerminalTextType = {
       text,

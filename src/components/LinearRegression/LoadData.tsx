@@ -1,7 +1,6 @@
 import { data, ready, tensor2d, tidy, util } from "@tensorflow/tfjs";
 import { useLRStore } from "../../store";
 import {
-  createModel,
   extractDataSet,
   normalise,
   splitTensor,
@@ -10,8 +9,6 @@ import {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function LoadData() {
-  const setModel = useLRStore((state) => state.setModel);
-
   const xLabel = useLRStore((state) => state.xLabel);
   const yLabel = useLRStore((state) => state.yLabel);
 
@@ -49,7 +46,7 @@ function LoadData() {
       (async function () {
         setLoader({
           isLoading: true,
-          status: "Loading data",
+          status: "Loading data from CSV",
         });
         await ready();
 
@@ -107,9 +104,6 @@ function LoadData() {
         );
         setTrainingLabelTensor(trainingLabelTensor);
         setTestingLabelTensor(testingLabelTensor);
-
-        const model = createModel();
-        setModel(model);
 
         await sleep(1000);
         setLoader({

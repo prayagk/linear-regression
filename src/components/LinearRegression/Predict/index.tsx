@@ -22,7 +22,7 @@ function Predict() {
     const data = new FormData(form);
     const input = parseInt(data.get("inputField") as string);
 
-    if (input < 200 || input > 1000000) return;
+    if (input < 300 || input > 1000000) return;
 
     const predictedPrice = predict(
       input,
@@ -47,7 +47,7 @@ function Predict() {
           Sq.ft of Living space
         </label>
         <input
-          min={200}
+          min={300}
           max={1000000}
           name="inputField"
           type="number"

@@ -1,4 +1,4 @@
-import { render } from "@tensorflow/tfjs-vis";
+import { render, visor } from "@tensorflow/tfjs-vis";
 import { DataPoints } from "../types";
 
 export const plot = async (
@@ -26,4 +26,12 @@ export const plot = async (
       yLabel: y,
     }
   );
+};
+
+export const toggleVisor = () => visor().toggle();
+
+export const closeVisor = () => {
+  if (visor().isOpen()) {
+    visor().close();
+  }
 };

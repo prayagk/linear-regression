@@ -1,6 +1,5 @@
-import { visor } from "@tensorflow/tfjs-vis";
 import { useState } from "react";
-import { plot } from "../../utils/visor-utils";
+import { plot, toggleVisor } from "../../utils/visor-utils";
 import { useLRStore } from "../../store";
 // import { linspace, tidy } from "@tensorflow/tfjs";
 // import { useLRStore } from "../../store";
@@ -13,9 +12,8 @@ function VisorControls() {
   const yLabel = useLRStore((state) => state.yLabel);
 
   const [isPlotted, setIsPlotted] = useState(false);
-  const toggleVisor = () => {
-    visor().toggle();
-  };
+  const toggleVisorClick = () => toggleVisor();
+
   const visualise = async () => {
     plot(xLabel, yLabel, plotingPoints, null);
     setIsPlotted(true);
@@ -34,7 +32,7 @@ function VisorControls() {
   return (
     <div>
       {isPlotted ? (
-        <button onClick={toggleVisor}>Toggle Visor</button>
+        <button onClick={toggleVisorClick}>Toggle Visor</button>
       ) : (
         <button title="Visualise data on a scatter plot" onClick={visualise}>
           Visualise Data
