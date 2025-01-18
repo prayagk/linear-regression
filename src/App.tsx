@@ -41,7 +41,7 @@ function App() {
 
   // console.log(tf.getBackend());
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-screen">
       <div className="flex-grow md:max-w-[900px] flex flex-col justify-center items-start">
         <LinearAggression />
       </div>

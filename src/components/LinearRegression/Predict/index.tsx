@@ -38,7 +38,7 @@ function Predict() {
     }
   };
   return (
-    <div className="border-2 md:border-0 md:border-l-2 p-3 md:p-0 md:px-3">
+    <div className="border-2 p-3">
       <div className="mb-3 text-3xl flex justify-center">
         <span>Predict House Price</span>
       </div>

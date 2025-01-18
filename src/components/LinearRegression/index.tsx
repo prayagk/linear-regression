@@ -34,7 +34,7 @@ const LinearAggression = () => {
             {isTrained && <Reset isMobile={isMobile} />}
           </Suspense>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
+        <div className="container grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
           <div>
             {isDataLoaded && (
               <>
