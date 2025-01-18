@@ -27,7 +27,7 @@ function LoadModel() {
         disabled={Boolean(trainingStatus)}
         onClick={loadSavedModel}
       >
-        Load model
+        Load Model
       </button>
     </div>
   );

@@ -31,11 +31,11 @@ const LinearAggression = () => {
           <Suspense fallback={<div>Loading</div>}>
             <LazyLoadData />
             {isDataLoaded && !isMobile && <LazyVisorComponent />}
-            {isTrained && <Reset />}
+            {isTrained && <Reset isMobile={isMobile} />}
           </Suspense>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="my-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
+          <div>
             {isDataLoaded && (
               <>
                 <div className="flex gap-3 justify-between items-center">

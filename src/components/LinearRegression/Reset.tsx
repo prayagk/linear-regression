@@ -2,7 +2,7 @@ import { useLRStore } from "../../store";
 import { closeVisor } from "../../utils/visor-utils";
 import { ArrowPathIcon } from "@heroicons/react/24/solid"; // For a solid reset icon
 
-function Reset() {
+function Reset({ isMobile }: { isMobile: boolean }) {
   const setTrainingStatus = useLRStore((state) => state.setTrainingStatus);
   const resetTerminalText = useLRStore((state) => state.resetTerminalText);
   const setModel = useLRStore((state) => state.setModel);
@@ -10,7 +10,7 @@ function Reset() {
     setTrainingStatus(null);
     resetTerminalText();
     setModel(null);
-    closeVisor();
+    if (!isMobile) closeVisor();
   };
   return (
     <div>

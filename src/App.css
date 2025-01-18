@@ -9,4 +9,8 @@
   button {
     color: #ffffff;
   }
+  select {
+    color: #000000; /* Ensure table text is visible */
+    background-color: #ffffff;
+  }
 }

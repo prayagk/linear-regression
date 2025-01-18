@@ -46,6 +46,10 @@ function Train({ isMobile }: { isMobile: boolean }) {
       setTerminalText("Model Trained!");
       setTerminalText(`Training Loss: ${loss.toFixed(5)}`);
     }
+
+    // Inspection
+    // show.modelSummary({ name: "Model Summary", tab: "Summary" }, model);
+    // model.summary();
   };
 
   return (

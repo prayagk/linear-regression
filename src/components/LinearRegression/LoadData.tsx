@@ -113,12 +113,6 @@ function LoadData() {
         setIsDataLoaded(true);
         setTerminalText("Data loaded");
         setTerminalText("Data shuffled and splitted");
-
-        // Inspection
-        // show.modelSummary({ name: "Model Summary", tab: "Model" }, model);
-        // const layer = model.getLayer("", 0);
-        // show.layer({ name: "Layer 1" }, layer);
-        // model.summary();
       })();
     });
   };
