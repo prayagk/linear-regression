@@ -3,6 +3,7 @@ import {
   data,
   io,
   layers,
+  linspace,
   loadLayersModel,
   losses,
   Rank,
@@ -16,6 +17,8 @@ import {
 } from "@tensorflow/tfjs";
 import { show } from "@tensorflow/tfjs-vis";
 import { NormalisedTensor } from "../types";
+import { useLRStore } from "../store";
+import { plot, showLayerInfo } from "./visor-utils";
 
 export const extractDataSet = (data: data.CSVDataset, x: string, y: string) =>
   data.map((record: any) => ({
@@ -68,7 +71,7 @@ export const createModel = () => {
   model.add(
     layers.dense({
       units: 1,
-      useBias: true,
+      useBias: false,
       activation: "linear",
       inputDim: 1,
     })
@@ -111,10 +114,11 @@ export const trainModel = (
         logs = logs || {};
         return onEpochEnd(epoch, logs);
       },
-      // onEpochBegin: function () {
-      //   show.layer({ name: `Layer 1` }, model.getLayer("", 0));
-      // },
-      // onBatchEnd,
+      onEpochBegin: () => {
+        const predictedLinePoints = plotPredictionLine(model);
+        plot(predictedLinePoints);
+        showLayerInfo(model);
+      },
     },
   });
 };
@@ -170,4 +174,33 @@ export const predict = (
     }
   });
   return predictedPrice;
+};
+
+export const plotPredictionLine = (model: Sequential) => {
+  const normalisedFeatureMinMax = useLRStore.getState().normalisedFeatureMinMax;
+  const normalisedLabelMinMax = useLRStore.getState().normalisedLabelMinMax;
+
+  const [xs, ys] = tidy(() => {
+    if (!normalisedFeatureMinMax || !normalisedLabelMinMax) return [[], []];
+    const normalisedXs = linspace(0, 1, 50);
+    const normalisedYs = model.predict(normalisedXs.reshape([50, 1]));
+    if (Array.isArray(normalisedYs)) return [[], []];
+
+    const xs = deNormalise(
+      normalisedXs,
+      normalisedFeatureMinMax.min,
+      normalisedFeatureMinMax.max
+    );
+    const ys = deNormalise(
+      normalisedYs,
+      normalisedLabelMinMax.min,
+      normalisedLabelMinMax.max
+    );
+    return [xs.dataSync(), ys.dataSync()];
+  });
+  const predictedLinePoints = Array.from(xs).map((item, index) => ({
+    x: item,
+    y: ys[index],
+  }));
+  return predictedLinePoints;
 };
