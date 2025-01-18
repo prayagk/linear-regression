@@ -1,8 +1,3 @@
-#root {
-  /* margin: 0 auto; */
-  padding: 0rem 2rem;
-}
-
 #tfjs-visor-container {
   color: #000000; /* Ensure table text is visible */
   background-color: #ffffff;

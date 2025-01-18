@@ -1,9 +1,10 @@
 import { predict } from "../../../utils/linear-regression";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLRStore } from "../../../store";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid"; // For outline style
 
 function Predict({ isTrained }: { isTrained: boolean }) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [prediction, setPrediction] = useState<null | string>(null);
 
   const model = useLRStore((state) => state.model);
@@ -13,6 +14,13 @@ function Predict({ isTrained }: { isTrained: boolean }) {
   const normalisedLabelMinMax = useLRStore(
     (state) => state.normalisedLabelMinMax
   );
+
+  useEffect(() => {
+    setPrediction(null);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [isTrained]);
 
   const predictPrice = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,6 +57,7 @@ function Predict({ isTrained }: { isTrained: boolean }) {
           Sq.ft of Living space
         </label>
         <input
+          ref={inputRef}
           disabled={!isTrained}
           min={300}
           max={1000000}
