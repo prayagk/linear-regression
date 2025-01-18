@@ -49,7 +49,7 @@ function Predict({ isTrained }: { isTrained: boolean }) {
   return (
     <div className="border-2 p-3">
       <div className="mb-5 text-3xl flex justify-center items-center">
-        <span>Predict House Price</span>
+        <span>Predict</span>
         <ArrowTrendingUpIcon className="mx-2 h-9 text-blue-500" />
       </div>
       <form onSubmit={predictPrice}>
