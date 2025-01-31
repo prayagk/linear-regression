@@ -12,6 +12,7 @@ import {
   split,
   Tensor,
   tensor1d,
+  tensor2d,
   tidy,
   train,
 } from "@tensorflow/tfjs";
@@ -71,7 +72,7 @@ export const createModel = () => {
   model.add(
     layers.dense({
       units: 1,
-      useBias: false,
+      useBias: true,
       activation: "linear",
       inputDim: 1,
     })
@@ -109,6 +110,7 @@ export const trainModel = (
     // batchSize: 512,
     epochs: 20,
     shuffle: true,
+    validationSplit: 0.2,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
         logs = logs || {};
@@ -204,3 +206,18 @@ export const plotPredictionLine = (model: Sequential) => {
   }));
   return predictedLinePoints;
 };
+
+export const plotParams = async (weight: number, bias: number) => {
+  const model = useLRStore.getState().model;
+  if (!model) return;
+
+  model.getLayer("", 0).setWeights([
+    tensor2d([[weight]]), // Kernel (input multiplier)
+    tensor1d([bias]), // Bias
+  ]);
+  await plotPredictionLine(model);
+  const layer = model.getLayer("", 0);
+  show.layer({ name: "Layer 1" }, layer);
+};
+
+(window as any).plotParams = plotParams;
