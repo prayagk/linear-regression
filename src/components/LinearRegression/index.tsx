@@ -1,6 +1,5 @@
-import Header from "./Header";
+import Header from "../Header";
 import Predict from "./Predict";
-
 import Loader from "../Loader";
 import { useLRStore } from "../../store";
 import { lazy, Suspense } from "react";
