@@ -21,7 +21,10 @@ const LinearAggression = () => {
   return (
     <>
       <Loader />
-      <Header />
+      <Header
+        title="Linear Regression with TensorFlow.js"
+        description="Train a model to predict house price from living space."
+      />
       <>
         <div className="mt-3 flex gap-2">
           <Suspense fallback={<div>Loading</div>}>

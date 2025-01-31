@@ -1,10 +1,14 @@
-function Header() {
+function Header({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <header>
-      <h1 className="font-bold">Linear Regression with TensorFlow.js</h1>
-      <p className="mt-1">
-        Train a model to predict house price from living space.
-      </p>
+      <h1 className="font-bold">{title}</h1>
+      <p className="mt-1">{description}</p>
     </header>
   );
 }
