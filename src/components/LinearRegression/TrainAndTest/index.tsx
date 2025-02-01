@@ -4,6 +4,7 @@ import Stats from "../Stats";
 import Test from "./Test";
 import SaveModel from "../SaveModel";
 import { WrenchScrewdriverIcon } from "@heroicons/react/24/solid"; // Outline version
+import { useLRStore } from "../../../store";
 
 function TrainAndTest({
   isMobile,
@@ -13,6 +14,7 @@ function TrainAndTest({
   isTrained: boolean;
 }) {
   const LazyTrainComponent = lazy(() => import("./Train"));
+  const terminalTexts = useLRStore((state) => state.terminalTexts);
 
   return (
     <>
@@ -28,7 +30,7 @@ function TrainAndTest({
           <span>Or</span>
           <LoadModel />
         </div>
-        <Stats />
+        <Stats terminalTexts={terminalTexts} />
         {isTrained && (
           <>
             <div className="flex gap-3 justify-between">

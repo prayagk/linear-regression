@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useLRStore } from "../../store";
+import { TerminalTextType } from "../../types";
 
-function Stats() {
+function Stats({ terminalTexts }: { terminalTexts: TerminalTextType[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const terminalTexts = useLRStore((state) => state.terminalTexts);
 
   useEffect(() => {
     if (ref.current) {
