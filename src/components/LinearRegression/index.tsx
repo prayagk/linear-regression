@@ -10,7 +10,7 @@ import TrainAndTest from "./TrainAndTest";
 const LazyVisorComponent = lazy(() => import("./VisorControls"));
 const LazyLoadData = lazy(() => import("./LoadData"));
 
-const LinearAggression = () => {
+const LinearRegression = () => {
   const trainingStatus = useLRStore((state) => state.trainingStatus);
   const isDataLoaded = useLRStore((state) => state.isDataLoaded);
   const isMobile = useIsMobile();
@@ -46,4 +46,4 @@ const LinearAggression = () => {
   );
 };
 
-export default LinearAggression;
+export default LinearRegression;

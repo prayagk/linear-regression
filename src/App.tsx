@@ -1,7 +1,7 @@
 // import { tensor, tensor1d, tensor2d } from "@tensorflow/tfjs";
 import "./App.css";
 import Credits from "./components/general/Credits";
-import LinearAggression from "./components/LinearRegression";
+import LinearRegression from "./components/LinearRegression";
 
 function App() {
   // tensor2d([[3], [2], [4]]).print();
@@ -43,7 +43,7 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen w-screen px-6 py-2">
       <div className="flex-grow md:max-w-[900px] flex flex-col justify-center items-start">
-        <LinearAggression />
+        <LinearRegression />
       </div>
       <>
         <footer>
