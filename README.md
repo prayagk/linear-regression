@@ -8,7 +8,10 @@ A simple machine learning app that predicts house prices based on square footage
 - Uses TensorFlow.js for model creation and training
 - Interactive UI to input square footage and get price predictions
 - Real-time graph showing data points and prediction line
+- Supports saving and loading the trained model using localStorage
 - All computation happens in the browser
+
+#### Live Preview - [https://prayagk.github.io/linear-regression](https://prayagk.github.io/linear-regression)
 
 ## 🛠 Tech Stack
 
@@ -16,6 +19,8 @@ A simple machine learning app that predicts house prices based on square footage
 - TypeScript
 - Vite
 - TensorFlow.js
+- Zustand
+- Tailwind CSS
 
 ## Getting Started
 
@@ -32,6 +37,11 @@ A simple machine learning app that predicts house prices based on square footage
    ```bash
     npm run dev
    ```
+
+## Screenshots
+
+<img src="/public/screenshots/image.png" width="300"/>
+<img src="/public/screenshots/image-2.png" width="300"/>
 
 ## Data Source
 
